@@ -1,7 +1,7 @@
 #!/bin/sh
 #set -o xtrace
 NOTES_DIR=${NOTES_DIR:-$HOME/notes}
-MENU_ITEMS=`find $NOTES_DIR -name \*.md | xargs -I{} -n1 basename '{}' '.md'`
+MENU_ITEMS=`find $NOTES_DIR -type f -name \*.md -not -name ".*" -exec basename {} .md \;`
 
 IFS=' ' read -r -a ROOT_SIZE <<< $(wattr wh $(lsw -r))
 ROOT_W_HALF=`expr ${ROOT_SIZE[0]} / 2`
