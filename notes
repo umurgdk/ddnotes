@@ -1,0 +1,97 @@
+#!/bin/sh
+#set -o xtrace
+NOTES_DIR=${NOTES_DIR:-$HOME/notes}
+MENU_ITEMS=`find $NOTES_DIR -name \*.md | xargs -I{} -n1 basename '{}' '.md'`
+
+IFS=' ' read -r -a ROOT_SIZE <<< $(wattr wh $(lsw -r))
+ROOT_W_HALF=`expr ${ROOT_SIZE[0]} / 2`
+
+NOTE_WIN=
+NOTE_NAME=
+
+function open_or_create_note() {
+  if [[ -z "${NOTE_NAME// }" ]]; then
+    exit
+  fi
+
+  if [[ ! -f $NOTES_DIR/$NOTE_NAME.md ]]; then
+    echo "" | dmenu -p "$NOTE_NAME does not exist, would you like to create? [Ent/Esc]"
+    if [[ $? -eq 0 ]]; then
+      touch $NOTES_DIR/$NOTE_NAME.md;
+      open_note;
+      echo $NOTE_NAME > $NOTES_DIR/.last
+    fi
+  else
+    find_win;
+    if [[ -z $NOTE_WIN ]]; then
+      open_note;
+    else
+      toggle_win;
+    fi
+    echo $NOTE_NAME > $NOTES_DIR/.last
+  fi
+}
+
+function ask_note_name() {
+  NOTE_NAME=`cat <<< $MENU_ITEMS | dmenu -p "Notes:"`
+}
+
+function to_hex() {
+  bc <<< "obase=16; $1" | sed -e 's/^/0x/'
+}
+
+function find_win() {
+  NOTE_WIN=${NOTE_WIN:-$(xdotool search --name notes:$NOTE_NAME)}
+}
+
+function resizewin() {
+  WIN_WIDTH=$(expr ${ROOT_SIZE[0]} / 2)
+  WIN_HEIGHT=$(expr ${ROOT_SIZE[1]} / 3)
+
+  xdotool windowsize $NOTE_WIN $WIN_WIDTH $WIN_HEIGHT
+}
+
+function centerx() {
+  X=$(expr $ROOT_W_HALF - $(wattr w $(to_hex $NOTE_WIN)) / 2)
+  xdotool windowmove $NOTE_WIN $X 0
+}
+
+function toggle_win() {
+  wattr m $(to_hex $NOTE_WIN)
+  if [ $? -eq 0 ]; then
+    xdotool windowunmap $NOTE_WIN;
+  else
+    resizewin;
+    centerx;
+    xdotool windowmap $NOTE_WIN;
+  fi
+}
+
+function open_note() {
+  alacritty \
+    --class notes \
+    --config-file $HOME/.config/alacritty/alacritty.yml \
+    -d 80 25 \
+    -t notes:$NOTE_NAME \
+    -e vim $NOTES_DIR/$NOTE_NAME.md &
+
+  sleep 0.3;
+
+  find_win;
+  resizewin;
+  centerx;
+}
+
+case $1 in
+  last)
+    if [[ -f $NOTES_DIR/.last ]]; then
+      NOTE_NAME=`cat $NOTES_DIR/.last`;
+    else
+      ask_note_name;
+    fi
+    open_or_create_note;
+    ;;
+  *)
+    ask_note_name;
+    open_or_create_note;
+esac
