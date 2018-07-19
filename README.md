@@ -2,6 +2,8 @@
 
 DDNotes opens a drop down terminal window to edit your notes.
 
+![notes](https://raw.githubusercontent.com/umurgdk/ddnotes/master/screenshots/notewindow.png)
+
 ## Features
 
 * Listing notes with dmenu
@@ -28,3 +30,8 @@ $ ddnotes last
 # Open ddnotes with different notes folder
 $ NOTES_DIR=$HOME/secret/notes ddnotes
 ```
+
+## Screenshots
+
+![listing](https://raw.githubusercontent.com/umurgdk/ddnotes/master/screenshots/listing.png)
+![create new](https://raw.githubusercontent.com/umurgdk/ddnotes/master/screenshots/create-new.png)
