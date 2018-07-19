@@ -14,6 +14,8 @@ DDNotes opens a drop down terminal window to edit your notes.
 
 * `xdotools`
 * `wmutils`
+* `dmenu`
+* `bash`
 * An editor application which supports setting custom window titles. Most of the terminal emulators are supporting custom titles with a custom command to run (e.g vim). Otherwise this script should be able to work with GUI applications too.
 
 ## Usage
