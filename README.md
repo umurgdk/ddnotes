@@ -33,6 +33,16 @@ $ ddnotes last
 $ NOTES_DIR=$HOME/secret/notes ddnotes
 ```
 
+### Configuring `i3wm`
+
+You need to configure `i3wm` to always keep note windows as floating. This way this script can change to size and position freely. Since I don't know the configurations of other tiling window managers please checkout their documentations to how to define floating rules for windows.
+
+Add this line to your i3 configuration file. If you want to keep borders delete the part `border none`
+
+```
+for_window [title="^notes:"] floating enable border none
+```
+
 ## Screenshots
 
 ![listing](https://raw.githubusercontent.com/umurgdk/ddnotes/master/screenshots/listing.png)
