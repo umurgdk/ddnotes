@@ -21,6 +21,8 @@ DDNotes opens a drop down terminal window to edit your notes.
 Right now the terminal emulator is hardcoded in the script, so you have to change it yourself by editing the file. You need to make sure the editor application (e.g terminal emulator) can be run with custom title argument. ddnotes depending on custom window titles.
 
 ```bash
+$ mkdir ~/notes
+
 # Show a list of notes with dmenu to open or create
 $ ddnotes
 
