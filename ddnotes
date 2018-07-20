@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 #set -o xtrace
 NOTES_DIR=${NOTES_DIR:-$HOME/notes}
 MENU_ITEMS=`find $NOTES_DIR -type f -name \*.md -not -name ".*" -exec basename {} .md \;`
