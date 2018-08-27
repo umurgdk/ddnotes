@@ -12,7 +12,7 @@ DDNotes opens a drop down terminal window to edit your notes.
 
 ## Dependencies
 
-* `xdotools`
+* `xdotool`
 * `wmutils`
 * `dmenu`
 * `bash`
